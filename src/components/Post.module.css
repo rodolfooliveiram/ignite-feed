@@ -1,0 +1,110 @@
+.post {
+  background-color: var(--gray-800);
+  border-radius: 8px;
+  padding: 2.5rem;
+}
+
+.post + .post {
+  margin-top: 2rem;
+}
+
+.post > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorInfo strong {
+  line-height: 1.6;
+  color: var(--gray-100);
+}
+
+.authorInfo span,
+.post > header time {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--gray-400);
+}
+
+.content {
+  margin-top: 1.5rem;
+  line-height: 1.6;
+}
+
+.content p + p {
+  margin-top: 1rem;
+}
+
+.content a {
+  font-weight: 700;
+  color: var(--green-500);
+}
+
+.content a:hover {
+  color: var(--green-300);
+}
+
+.commentForm {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--gray-600);
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.commentForm > strong {
+  color: var(--gray-100);
+  line-height: 1.6;
+  margin-top: 2rem;
+}
+
+.commentForm textarea {
+  background-color: var(--gray-900);
+  border: 1px solid var(--gray-600);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--gray-100);
+  line-height: 1.4;
+  resize: none;
+  transition: border 0.1s;
+}
+
+.commentForm textarea:focus {
+  border: 1px solid var(--gray-900);
+}
+
+.publish {
+  border: none;
+  background-color: var(--gray-600);
+  color: var(--gray-400);
+  font-weight: 700;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.1s;
+  max-width: max-content;
+  cursor: pointer;
+}
+
+.commentForm:focus-within .publish {
+  background-color: var(--green-500);
+  color: var(--white);
+}
+
+.commentForm:focus-within .publish:hover {
+  background-color: var(--green-300);
+}
+
+.commentFeed {
+  margin-top: 2rem;
+}

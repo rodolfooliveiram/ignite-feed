@@ -1,9 +1,25 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
+import { format, formatDistanceToNow } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 import styles from './Post.module.css';
 
-export function Post(props) {
+export function Post({ author, publishedAt, content }) {
+  const publishedDateFormatted = format(
+    publishedAt,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBR,
+    }
+  );
+
+  const publishedDataRelativeToNow = formatDistanceToNow(publishedAt, {
+    addSuffix: true,
+    locale: ptBR,
+  });
+
   return (
     <article className={styles.post}>
       <header>
@@ -11,28 +27,38 @@ export function Post(props) {
           <Avatar src='https://github.com/rodolfooliveiram.png' alt='' />
 
           <div className={styles.authorInfo}>
-            <strong>{props.author}</strong>
-            <span>Front-end Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title='13 de junho às 00:57' dateTime='13/06/2023 00:57:32'>
-          Publicado há 1h
+        <time
+          title={publishedDateFormatted}
+          dateTime={publishedAt.toISOString()}
+        >
+          {publishedDataRelativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p>Fala galeraa 👋</p>
+        {content.map((line) => {
+          if (line.type === 'paragraph') {
+            return <p>{line.content}</p>;
+          } else if (line.type === 'link') {
+            return (
+              <p>
+                <a href='#'>{line.content}</a>
+              </p>
+            );
+          }
+        })}
+
         <p>
-          Acabei de subir mais um projeto no meu portifa. É um projeto que fiz
-          no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀
-        </p>
-        <p>
-          👉 <a href='#'>jane.design/doctorcare</a>
-        </p>
-        <p>
-          <a href='#'>#novoprojeto</a> <a href='#'>#nlw</a>{' '}
-          <a href='#'>#rocketseat</a>
+          {content.map((line) => {
+            if (line.type === 'hashtag') {
+              return <a href='#'>{line.content}</a>;
+            }
+          })}
         </p>
       </div>
 

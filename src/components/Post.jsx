@@ -5,6 +5,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 import styles from './Post.module.css';
+import { useState, useRef } from 'react';
 
 export function Post({ author, publishedAt, content }) {
   const publishedDateFormatted = format(
@@ -19,6 +20,29 @@ export function Post({ author, publishedAt, content }) {
     addSuffix: true,
     locale: ptBR,
   });
+
+  const [comments, setComments] = useState([1, 2]);
+  const buttonRef = useRef(null);
+
+  function handleCreateNewComment() {
+    event.preventDefault();
+    setComments([...comments, comments.length + 1]);
+  }
+
+  function handleCommentContent(event) {
+    const commentText = event.target.value;
+    const publishButton = buttonRef.current;
+
+    if (commentText !== '') {
+      publishButton.removeAttribute('disabled');
+      publishButton.classList.add(`${styles.active}`);
+    } else {
+      publishButton.setAttribute('disabled', '');
+      publishButton.classList.remove(`${styles.active}`);
+    }
+
+    console.log(commentText);
+  }
 
   return (
     <article className={styles.post}>
@@ -62,18 +86,27 @@ export function Post({ author, publishedAt, content }) {
         </p>
       </div>
 
-      <form className={styles.commentForm}>
+      <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
         <strong>Deixe seu feedback:</strong>
-        <textarea placeholder='Escreva um comentário...' />
-        <button type='submit' className={styles.publish}>
+        <textarea
+          id='textarea'
+          onChange={handleCommentContent}
+          placeholder='Escreva um comentário...'
+        />
+        <button
+          ref={buttonRef}
+          type='submit'
+          className={styles.publish}
+          disabled
+        >
           Publicar
         </button>
       </form>
 
       <div className={styles.commentFeed}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment) => {
+          return <Comment />;
+        })}
       </div>
     </article>
   );

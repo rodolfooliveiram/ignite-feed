@@ -21,27 +21,42 @@ export function Post({ author, publishedAt, content }) {
     locale: ptBR,
   });
 
-  const [comments, setComments] = useState([1, 2]);
+  const [comments, setComments] = useState([
+    'Show! Parabéns, Rodolfo!',
+    'Comentário 2',
+    'Comentário 3',
+  ]);
+  const [newCommentContent, setNewCommentContent] = useState('');
+
   const buttonRef = useRef(null);
+  const publishButton = buttonRef.current;
 
   function handleCreateNewComment() {
     event.preventDefault();
-    setComments([...comments, comments.length + 1]);
+    setComments([...comments, newCommentContent]);
+    setNewCommentContent('');
+
+    publishButton.setAttribute('disabled', '');
+    publishButton.classList.remove(`${styles.active}`);
   }
 
   function handleCommentContent(event) {
-    const commentText = event.target.value;
-    const publishButton = buttonRef.current;
+    setNewCommentContent(event.target.value);
 
-    if (commentText !== '') {
+    if (event.target.value !== '') {
       publishButton.removeAttribute('disabled');
       publishButton.classList.add(`${styles.active}`);
     } else {
       publishButton.setAttribute('disabled', '');
       publishButton.classList.remove(`${styles.active}`);
     }
+  }
 
-    console.log(commentText);
+  function deleteComment(commentToDelete) {
+    const newCommentsList = comments.filter((comment) => {
+      return comment !== commentToDelete;
+    });
+    setComments(newCommentsList);
   }
 
   return (
@@ -67,10 +82,10 @@ export function Post({ author, publishedAt, content }) {
       <div className={styles.content}>
         {content.map((line) => {
           if (line.type === 'paragraph') {
-            return <p>{line.content}</p>;
+            return <p key={line.content}>{line.content}</p>;
           } else if (line.type === 'link') {
             return (
-              <p>
+              <p key={line.content}>
                 <a href='#'>{line.content}</a>
               </p>
             );
@@ -80,7 +95,11 @@ export function Post({ author, publishedAt, content }) {
         <p>
           {content.map((line) => {
             if (line.type === 'hashtag') {
-              return <a href='#'>{line.content}</a>;
+              return (
+                <a key={line.content} href='#'>
+                  {line.content}
+                </a>
+              );
             }
           })}
         </p>
@@ -91,6 +110,7 @@ export function Post({ author, publishedAt, content }) {
         <textarea
           id='textarea'
           onChange={handleCommentContent}
+          value={newCommentContent}
           placeholder='Escreva um comentário...'
         />
         <button
@@ -105,7 +125,13 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.commentFeed}>
         {comments.map((comment) => {
-          return <Comment />;
+          return (
+            <Comment
+              key={comment}
+              content={comment}
+              onDeleteComment={deleteComment}
+            />
+          );
         })}
       </div>
     </article>

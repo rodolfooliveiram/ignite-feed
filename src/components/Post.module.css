@@ -86,24 +86,24 @@
 
 .publish {
   border: none;
-  background-color: var(--gray-600);
-  color: var(--gray-400);
+  background-color: var(--green-500);
+  color: var(--white);
   font-weight: 700;
   padding: 1rem 1.5rem;
   border-radius: 8px;
   transition: all 0.1s;
   max-width: max-content;
-  cursor: not-allowed;
-}
-
-.active {
-  background-color: var(--green-500);
-  color: var(--white);
   cursor: pointer;
 }
 
-.publish.active:hover {
+.publish:hover {
   background-color: var(--green-300);
+}
+
+.publish:disabled {
+  background-color: var(--gray-600);
+  color: var(--gray-400);
+  cursor: not-allowed;
 }
 
 .commentFeed {

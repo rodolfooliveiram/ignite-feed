@@ -5,7 +5,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
 import styles from './Post.module.css';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 export function Post({ author, publishedAt, content }) {
   const publishedDateFormatted = format(
@@ -26,30 +26,19 @@ export function Post({ author, publishedAt, content }) {
     'Comentário 2',
     'Comentário 3',
   ]);
+
   const [newCommentContent, setNewCommentContent] = useState('');
 
-  const buttonRef = useRef(null);
-  const publishButton = buttonRef.current;
+  const isNewCommentEmpty = newCommentContent.length === 0;
 
   function handleCreateNewComment() {
     event.preventDefault();
     setComments([...comments, newCommentContent]);
     setNewCommentContent('');
-
-    publishButton.setAttribute('disabled', '');
-    publishButton.classList.remove(`${styles.active}`);
   }
 
   function handleCommentContent(event) {
     setNewCommentContent(event.target.value);
-
-    if (event.target.value !== '') {
-      publishButton.removeAttribute('disabled');
-      publishButton.classList.add(`${styles.active}`);
-    } else {
-      publishButton.setAttribute('disabled', '');
-      publishButton.classList.remove(`${styles.active}`);
-    }
   }
 
   function deleteComment(commentToDelete) {
@@ -114,10 +103,9 @@ export function Post({ author, publishedAt, content }) {
           placeholder='Escreva um comentário...'
         />
         <button
-          ref={buttonRef}
           type='submit'
           className={styles.publish}
-          disabled
+          disabled={isNewCommentEmpty}
         >
           Publicar
         </button>

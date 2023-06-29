@@ -1,11 +1,35 @@
 /* eslint-disable react/prop-types */
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Avatar } from './Avatar';
 import styles from './Comment.module.css';
 import { Trash, HandsClapping } from 'phosphor-react';
+import { DeleteCommentModal } from './DeleteCommentModal';
 
 export function Comment({ content, onDeleteComment }) {
-  function handleDeleteComment() {
-    onDeleteComment(content);
+  const [applauseCount, setApplauseCount] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  function handleOpenDeleteCommentModal() {
+    setShowDeleteModal(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function confirmOrCancelDeleteComment(response) {
+    if (response) {
+      onDeleteComment(content);
+      setShowDeleteModal(false);
+      document.body.style.overflow = 'unset';
+    } else {
+      setShowDeleteModal(false);
+      document.body.style.overflow = 'unset';
+    }
+  }
+
+  function handleApplauseCount() {
+    setApplauseCount((applauseState) => {
+      return applauseState + 1;
+    });
   }
 
   return (
@@ -28,18 +52,28 @@ export function Comment({ content, onDeleteComment }) {
               </time>
             </div>
 
-            <button onClick={handleDeleteComment} title='Apagar comentário'>
+            <button
+              onClick={() => handleOpenDeleteCommentModal()}
+              title='Apagar comentário'
+            >
               <Trash size={24} />
             </button>
+            {showDeleteModal &&
+              createPortal(
+                <DeleteCommentModal
+                  onDeleteComment={(res) => confirmOrCancelDeleteComment(res)}
+                />,
+                document.body
+              )}
           </header>
 
           <p>{content}</p>
         </div>
 
         <footer>
-          <button>
+          <button onClick={handleApplauseCount}>
             <HandsClapping size={20} />
-            <span>3</span> aplausos
+            <span>{applauseCount}</span> aplauso(s)
           </button>
         </footer>
       </div>

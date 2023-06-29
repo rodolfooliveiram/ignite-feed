@@ -1,0 +1,68 @@
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+  background-color: rgba(18, 18, 20, 0.8);
+  backdrop-filter: blur(5px);
+  padding: 1rem 1.5rem;
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  align-items: center;
+}
+
+.modal {
+  background-color: var(--gray-800);
+  padding: 4rem 3rem 3rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  position: relative;
+  text-align: center;
+}
+
+.modal > div {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.modal > div > button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--gray-600);
+  border: none;
+  color: var(--green-400);
+  transition: all 0.1s;
+}
+
+.modal .noDeleteButton {
+  background-color: var(--green-500);
+  color: var(--white);
+}
+
+.modal .noDeleteButton:hover {
+  background-color: var(--green-300);
+}
+
+.modal .yesDeleteButton:hover {
+  background-color: var(--red-300);
+  color: var(--white);
+}
+
+.closeModalButton {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-radius: 2px;
+  line-height: 0;
+  color: var(--gray-400);
+}
+
+.closeModalButton:hover {
+  color: var(--white);
+}

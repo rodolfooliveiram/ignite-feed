@@ -35,6 +35,7 @@
   border: none;
   color: var(--green-400);
   transition: all 0.1s;
+  cursor: pointer;
 }
 
 .modal .noDeleteButton {
